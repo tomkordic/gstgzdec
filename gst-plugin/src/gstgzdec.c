@@ -294,7 +294,7 @@ static GstFlowReturn gst_gzdec_chain(GstPad *pad, GstObject *parent,
           GST_ELEMENT_ERROR(
               dec, STREAM, DECODE, (NULL),
               ("Failed to decompress bz data (error code %i).", ret));
-          flow = GST_FLOW_ERROR;
+          flow = GST_FLOW_OK;
           gstgzdec_bz_decompress_init(dec);
           gst_buffer_unref(out);
           dec->bz_buffer_detected = FALSE;
