@@ -261,9 +261,9 @@ gint main(gint argc, gchar *argv[]) {
     }
     break;
   }
-  remove(input_file1);
-  remove(input_file2);
-  remove(result_file_path);
+  // remove(input_file1);
+  // remove(input_file2);
+  // remove(result_file_path);
   if (res == 0) {
     g_print("DEBUG: ALL tests passed\n");
   } else {
