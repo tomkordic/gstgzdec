@@ -12,8 +12,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build
         run:  meson setup builddir |
+              pwd |
               ninja -C builddir
-      - name: PWD
-        run: pwd
       - name: Run
         run: GST_PLUGIN_PATH=builddir/gst-plugin/ ./builddir/gst-plugin/gstgzdec_test ./COPYING.LIB
