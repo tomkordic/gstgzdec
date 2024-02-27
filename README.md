@@ -32,6 +32,7 @@ To install plugin shared libs in gstreamer plugins directory, call:
     cd builddir
     meson install
 
+Build tested on MacOS Sonoma and Debian 6.5.13-1.
 ## Test
 After sucessfull build of a project the test executable should be located in a builddir, run it with single argument that is a path to some test file. Also make sure to specify GST_PLUGIN_PATH so that gstreamer can find a gzdec plugin, for example run:
 
