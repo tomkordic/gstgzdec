@@ -290,11 +290,12 @@ static GstFlowReturn gst_gzdec_chain(GstPad *pad, GstObject *parent,
         dec->bz_stream.next_out = (Bytef *)outmap.data;
         dec->bz_stream.avail_out = outmap.size;
         ret = BZ2_bzDecompress(&dec->bz_stream);
-        if ((ret != BZ_OK) && (ret != BZ_STREAM_END)) {
+        if ((ret != BZ_OK) && (ret != BZ_STREAM_END) &&
+            (ret != BZ_SEQUENCE_ERROR)) {
           GST_ELEMENT_ERROR(
               dec, STREAM, DECODE, (NULL),
               ("Failed to decompress bz data (error code %i).", ret));
-          flow = GST_FLOW_OK;
+          flow = GST_FLOW_ERROR;
           gstgzdec_bz_decompress_init(dec);
           gst_buffer_unref(out);
           dec->bz_buffer_detected = FALSE;
@@ -332,7 +333,6 @@ static GstFlowReturn gst_gzdec_chain(GstPad *pad, GstObject *parent,
             dec->stream.total_out - gst_buffer_get_size(out);
       }
 
-      
       /* Configure source pad (if necessary) */
       if (!dec->offset) {
         GstCaps *caps = NULL;
@@ -410,8 +410,8 @@ static void gst_gzdec_init(Gstgzdec *dec) {
   dec->srcpad = gst_pad_new_from_static_template(&src_factory, "src");
   GST_PAD_SET_PROXY_CAPS(dec->srcpad);
   gst_element_add_pad(GST_ELEMENT(dec), dec->srcpad);
-  dec->zlib_ready         = FALSE;
-  dec->bzlib_ready        = FALSE;
+  dec->zlib_ready = FALSE;
+  dec->bzlib_ready = FALSE;
   dec->bz_buffer_detected = FALSE;
   gstgzdec_zlib_decompress_init(dec);
   gstgzdec_bz_decompress_init(dec);
